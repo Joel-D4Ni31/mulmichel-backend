@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ProductService = require('./../services/product.service')
+const ProductService = require('../../services/product.service')
 const service = new ProductService();
 
 router.get('/',(req,res)=>{
@@ -38,7 +38,7 @@ router.patch('/:id',(req,res)=>{
   });
 })
 router.delete('/:id',(req,res)=>{
-  const {id} = req.body;
+  const {id} = req.params;
   const rta = service.delete(id);
   res.json({
     message: 'eliminado',
