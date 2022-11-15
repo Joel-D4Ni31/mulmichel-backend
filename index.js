@@ -3,6 +3,7 @@ const routerApi = require('./routes/product');
 const routerApi11 = require('./routes/empleado');
 const routerApi2 = require('./routes/venta');
 const routerApi3 = require('./routes/cliente');
+const routerApi4 = require('./routes/pago');
 //const { use } = require('./routes/product.router');
 const app = express();
 const port = 3000;
@@ -19,6 +20,7 @@ routerApi11(app);
 routerApi(app);
 routerApi2(app);
 routerApi3(app);
+routerApi4(app);
 
 
 app.listen(port, () => {
