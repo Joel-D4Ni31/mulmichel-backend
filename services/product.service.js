@@ -1,4 +1,7 @@
+//const { rejects } = require('assert');
 const crypto = require('crypto');
+const boom = require('@hapi/boom')
+
 
 class ProductService{
 
@@ -7,16 +10,17 @@ class ProductService{
     this.generate(10);
 
   }
-  generate(limit){
+  async generate(limit){
     for (let index = 0; index < limit; index++){
       this.products.push({
         id: crypto.randomUUID(),
         nombre: 'product' + index,
-        precio: 10 + Math.floor(Math.random()*190)
+        precio: 10 + Math.floor(Math.random()*190),
+        estaBloqueado: Math.random()<0.25
       });
     }
   }
-  create(data){
+  async create(data){
     const nuevoProducto = {
       id: crypto.randomUUID(),
       ...data
@@ -24,15 +28,24 @@ class ProductService{
     this.products.push(nuevoProducto);
     return nuevoProducto;
   }
-  find(){
+  async find(){
     return this.products;
+    // return new Promise((resolve, reject)=>{
+    //   setTimeout(()=> {
+    //     resolve(this.products);
+    //   },300);
+    // });
   }
-  findOne(id){
-    return this.products.find(product => {
+  async findOne(id){
+    const producto = this.products.find((product) => {
       return product.id === id;
-    })
+    });
+    if (!producto){//!product
+      throw boom.notFound('product not found');
+    }
+    return producto;
   }
-  update(id, changes){
+  async update(id, changes){
     const index = this.products.findIndex(product =>{
       return product.id === id;
     });
@@ -46,7 +59,7 @@ class ProductService{
     };
     return this.products[index];
   }
-  delete(id){
+  async delete(id){
     const index = this.products.findIndex(product =>{
       return product.id === id;
     });

@@ -1,12 +1,9 @@
 const express = require('express');
-const routerApi = require('./routes/product');
-const routerApi11 = require('./routes/empleado');
-const routerApi2 = require('./routes/venta');
-const routerApi3 = require('./routes/cliente');
-const routerApi4 = require('./routes/pago');
-//const { use } = require('./routes/product.router');
+const routerApi = require('./routes');
 const app = express();
 const port = 3000;
+
+const {logError,errorHandler,boomErrorHandler} = require('./middlewares/error.handler');
 
 app.use(express.json());
 
@@ -16,11 +13,11 @@ app.get('/',(req, res) => {
 
 
 //derivando toda la resolución de rutas a la ruta /routes/
-routerApi11(app);
 routerApi(app);
-routerApi2(app);
-routerApi3(app);
-routerApi4(app);
+
+app.use(logError);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 
 app.listen(port, () => {

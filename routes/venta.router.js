@@ -1,40 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const ProductService = require('../../services/product.service')
-const service = new ProductService();
+const VentaService = require('../services/venta.service')
+const service = new VentaService();
 
 router.get('/',(req,res)=>{
-  const products = service.find();
-  res.status(200).json(products);
+  const ventas = service.find();
+  res.status(200).json(ventas);
 });
 
 router.get('/:id',(req,res)=>{
   const { id }= req.params;
-  const product = service.findOne(id);
-  if (product === undefined){
+  const venta = service.findOne(id);
+  if (venta === undefined){
     res.status(404).json({
-      message: 'product not found',
+      message: 'sale not found',
       id
     })
   }
-  res.status(201).json(product);
+  res.status(201).json(venta);
 });
 
 router.post('/',(req,res)=>{
   const body = req.body;
-  const nuevoProducto = service.create(body);
+  const nuevoVenta = service.create(body);
   res.status(201).json({
     message: 'creado',
-    data: nuevoProducto
+    data: nuevoVenta
   });
 })
 router.patch('/:id',(req,res)=>{
   const {id} = req.params;
   const body = req.body;
-  const product = service.update(id, body);
+  const venta = service.update(id, body);
   res.status(200).json({
     message: 'actualizado',
-    product
+    venta
   });
 })
 router.delete('/:id',(req,res)=>{
