@@ -4,8 +4,8 @@ const router = express.Router();
 const validatorHandler = require('../middlewares/validator.handler');
 const { getcomentarioSchema, createcomentarioSchema, updatecomentarioSchema } = require('../schemas/comentarios.schema');
 
-const PagoService = require('../services/comentarios.service')
-const service = new PagoService();
+const ComentariosService = require('../services/comentarios.service')
+const service = new ComentariosService();
 
 router.get('/', async (req, res) => {
   const comentarios = await service.find();

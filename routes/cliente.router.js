@@ -9,7 +9,7 @@ const {createclienteSchema,updateclienteSchema,getclienteSchema} = require('../s
 
 
 router.get('/', async (req, res) => {
-  const clientes = service.find();
+  const clientes = await service.find();
     res.status(200).json(clientes);
   });
 
@@ -25,9 +25,6 @@ router.get('/', async (req, res) => {
     next(error);
   }
 });
-
-
-
 router.post('/',
   validatorHandler(createclienteSchema,'body'),
   async (req,res)=>{
@@ -62,9 +59,9 @@ validatorHandler(getclienteSchema,'params'),
 async (req,res, next)=>{
   try{
     const {id} = req.params;
-    const cliente = await service.update(id);
+    const cliente = await service.delete(id);
     res.status(200).json({
-      message: 'actualizado',
+      message: 'eliminado',
       cliente
     });
   }catch(error){

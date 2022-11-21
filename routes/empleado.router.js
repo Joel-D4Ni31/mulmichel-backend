@@ -10,7 +10,7 @@ const {createEmpleadoSchema,updatempleadoSchema,getEmpleadoSchema} = require('..
 
 
 router.get('/', async (req, res) => {
-  const empleados = service.find();
+  const empleados = await service.find();
     res.status(200).json(empleados);
   });
 router.get('/:id',
@@ -60,9 +60,9 @@ validatorHandler(getEmpleadoSchema,'params'),
 async (req,res, next)=>{
   try{
     const {id} = req.params;
-    const empleado = await service.update(id);
+    const empleado = await service.delete(id);
     res.status(200).json({
-      message: 'actualizado',
+      message: 'eliminado',
       empleado
     });
   }catch(error){

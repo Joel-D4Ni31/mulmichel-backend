@@ -4,7 +4,7 @@ const router = express.Router();
 const  validatorHandler =  require('../middlewares/validator.handler');
 const {createCategoriaSchema,updateCategoriaSchema,getCategoriaSchema} = require('../schemas/categoria.schema');
 
-const CategoriaService = require('../services/categoria.service')
+const CategoriaService = require('../services/categorias.service')
 const service = new CategoriaService();
 
 router.get('/', async (req,res)=>{
