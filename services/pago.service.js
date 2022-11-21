@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-
+const boom = require('@hapi/boom')
 
 class PagosService{
 
@@ -9,19 +9,19 @@ class PagosService{
 
     }
 
-    generate(limite){
+    async generate(limite){
         for (let index = 0; index < limite ; index ++)
         this.pagos.push({
                 id: crypto.randomUUID(),
-                cliente: 'pagos' + index,
-                nombre: 'pagos' + index,
-                telefono: 10 + Math.floor(Math.random()*190),
-                monto: 10 + Math.floor(Math.random()*190)
+                tipoPago: 'pagos' + index,
+                fechaPago: new Date(),
+                montoPago: 10 + Math.floor(Math.random()*190),
+                estadoPago: Math.random()<0.25
         })
 
     }
 
-   create(data){
+    async create(data){
     const nuevoPago = {
         id: crypto.randomUUID(),
         ...data
@@ -31,39 +31,43 @@ class PagosService{
 
     }
 
-   find(){
+    async find(){
     return this.pagos;
    }
 
-   findOne(id){
-     return this.pagos.find(pago => {
-        return pago.id === id;
-     });
+   async findOne(id){
+    const pago = this.pagos.find((pago) => {
+      return pago.id === id;
+    });
+    if (!pago){//!product
+      throw boom.notFound('pago not found');
+    }
+    return pago;
    }
 
-   update(id, changes){
+   async update(id, changes){
     const index = this.pagos.findIndex(pago =>{
-        return pago.id === id;
-      });
-      if (index === -1){
-        throw new Error('pago no encontrado');
-      }
-      const pago = this.pagos[index];
-      this.pagos[index] = {
-        ...pago,
-        ...changes
-      };
-      return this.pagos[index];
+      return pago.id === id;
+    });
+    if (index === -1){
+      throw boom.notFound('pago not found');
+    }
+    const pago = this.pagos[index];
+    this.pagos[index] = {
+      ...pago,
+      ...changes
+    };
+    return this.pagos[index];
    }
-   delete(id){
+   async delete(id){
     const index = this.pagos.findIndex(pago =>{
-        return pago.id === id;
-      });
-      if (index === -1){
-        throw new Error('pago no encontrado');
-      }
-      this.pagos.splice(index,1);
-      return { id };
+      return pago.id === id;
+    });
+    if (index === -1){
+      throw boom.notFound('pago not found');
+    }
+    this.pagos.splice(index,1);
+    return { id };
    }
   }
 

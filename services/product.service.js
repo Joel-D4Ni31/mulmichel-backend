@@ -1,7 +1,5 @@
-//const { rejects } = require('assert');
 const crypto = require('crypto');
 const boom = require('@hapi/boom')
-
 
 class ProductService{
 
@@ -30,11 +28,6 @@ class ProductService{
   }
   async find(){
     return this.products;
-    // return new Promise((resolve, reject)=>{
-    //   setTimeout(()=> {
-    //     resolve(this.products);
-    //   },300);
-    // });
   }
   async findOne(id){
     const producto = this.products.find((product) => {
@@ -50,7 +43,7 @@ class ProductService{
       return product.id === id;
     });
     if (index === -1){
-      throw new Error('product not found');
+      throw boom.notFound('product not found');
     }
     const product = this.products[index];
     this.products[index] = {
@@ -64,7 +57,7 @@ class ProductService{
       return product.id === id;
     });
     if (index === -1){
-      throw new Error('product not found');
+      throw boom.notFound('product not found');
     }
     this.products.splice(index,1);
     return { id };

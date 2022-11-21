@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const boom = require('@hapi/boom')
 
 class clientesService{
     constructor(){
@@ -7,7 +8,7 @@ class clientesService{
 
     }
 
-    generate(limite){
+    async generate(limite){
         for (let index = 0; index < limite ; index ++)
         this.clientes.push({
                 id: crypto.randomUUID(),
@@ -20,7 +21,7 @@ class clientesService{
         })
     }
 
-    create(data){
+    async create(data){
         const nuevocliente = {
             id: crypto.randomUUID(),
             ...data
@@ -30,23 +31,27 @@ class clientesService{
 
         }
 
-       find(){
+    async find(){
         return this.clientes;
        }
 
-       findOne(id){
-         return this.clientes.find(cliente => {
-            return cliente.id === id;
-         });
-       }
+    async findOne(id){
+        const cliente = this.clientes.find((cliente) => {
+          return cliente.id === id;
+        });
+        if (!cliente){//!product
+          throw boom.notFound('cliente not found');
+        }
+        return cliente;
+      }
 
 
-   update(id, changes){
+    async update(id, changes){
     const index = this.clientes.findIndex(cliente =>{
         return cliente.id === id;
       });
       if (index === -1){
-        throw new Error('cliente not found');
+        throw boom.notFound('cliente not found');
       }
       const cliente = this.clientes[index];
       this.clientes[index] = {
@@ -55,18 +60,15 @@ class clientesService{
       };
       return this.clientes[index];
    }
-   delete(id){
+   async delete(id){
     const index = this.clientes.findIndex(cliente =>{
         return cliente.id === id;
       });
       if (index === -1){
-        throw new Error('product not found');
+        throw boom.notFound('cliente not found');
       }
       this.clientes.splice(index,1);
       return { id };
    }
-
-
-
 }
 module.exports=clientesService;

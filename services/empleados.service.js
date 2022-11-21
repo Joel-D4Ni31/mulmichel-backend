@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-
+const boom = require('@hapi/boom')
 
 class EmpleadosService{
 
@@ -9,7 +9,7 @@ class EmpleadosService{
 
     }
 
-    generate(limite){
+    async generate(limite){
         for (let index = 0; index < limite ; index ++)
         this.empleados.push({
                 id: crypto.randomUUID(),
@@ -21,7 +21,7 @@ class EmpleadosService{
 
     }
 
-   create(data){
+    async create(data){
     const nuevoEmpleado = {
         id: crypto.randomUUID(),
         ...data
@@ -31,22 +31,26 @@ class EmpleadosService{
 
     }
 
-   find(){
+    async find(){
     return this.empleados;
    }
 
-   findOne(id){
-     return this.empleados.find(empleado => {
+  async findOne(id){
+      const empleado =    this.empleados.find(empleado => {
         return empleado.id === id;
      });
+  if (!empleado){
+  throw boom.notFound('empleado not found');
+    }
+    return empleado;
    }
 
-   update(id, changes){
+   async update(id, changes){
     const index = this.empleados.findIndex(empleado =>{
         return empleado.id === id;
       });
       if (index === -1){
-        throw new Error('empleado not found');
+        throw boom.notFound('empleado not found');
       }
       const empleado = this.empleados[index];
       this.empleados[index] = {
@@ -55,12 +59,12 @@ class EmpleadosService{
       };
       return this.empleados[index];
    }
-   delete(id){
+   async delete(id){
     const index = this.empleados.findIndex(empleado =>{
         return empleado.id === id;
       });
       if (index === -1){
-        throw new Error('empleado not found');
+        throw boom.notFound('empleado not found');
       }
       this.empleados.splice(index,1);
       return { id };
@@ -68,3 +72,4 @@ class EmpleadosService{
   }
 
   module.exports= EmpleadosService;
+

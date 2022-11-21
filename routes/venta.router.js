@@ -1,49 +1,69 @@
 const express = require('express');
 const router = express.Router();
+
+const validatorHandler =require('../middlewares/validator.handler');
+const {createVentaSchema,updateVentaSchema,getVentaSchema} = require('../schemas/venta.schema')
+
 const VentaService = require('../services/venta.service')
 const service = new VentaService();
 
-router.get('/',(req,res)=>{
-  const ventas = service.find();
+router.get('/', async (req,res)=>{
+  const ventas = await service.find();
   res.status(200).json(ventas);
 });
 
-router.get('/:id',(req,res)=>{
-  const { id }= req.params;
-  const venta = service.findOne(id);
-  if (venta === undefined){
-    res.status(404).json({
-      message: 'sale not found',
-      id
-    })
+router.get('/:id',
+              validatorHandler(getVentaSchema,'params'),
+              async (req,res, next)=>{
+  try{
+    const { id }= req.params;
+    const venta = await service.findOne(id);
+    res.status(200).json(venta);
+  }catch(error){
+    next(error);
   }
-  res.status(201).json(venta);
 });
 
-router.post('/',(req,res)=>{
+router.post('/',
+             validatorHandler(createVentaSchema,'body'),
+              async (req,res)=>{
   const body = req.body;
-  const nuevoVenta = service.create(body);
+  const nuevoVenta = await service.create(body);
   res.status(201).json({
     message: 'creado',
-    data: nuevoVenta
+    nuevoVenta
   });
 })
-router.patch('/:id',(req,res)=>{
-  const {id} = req.params;
-  const body = req.body;
-  const venta = service.update(id, body);
-  res.status(200).json({
-    message: 'actualizado',
-    venta
-  });
-})
-router.delete('/:id',(req,res)=>{
-  const {id} = req.params;
-  const rta = service.delete(id);
-  res.json({
-    message: 'eliminado',
-    rta
-  });
-})
+router.patch('/:id',
+                validatorHandler(getVentaSchema,'params'),
+                validatorHandler(updateVentaSchema,'body'),
+                async (req,res, next)=>{
+  try{
+    const {id} = req.params;
+    const body = req.body;
+    const venta = await service.update(id, body);
+    res.status(200).json({
+      message: 'actualizado',
+      venta
+    });
+  }catch(error){
+    next(error);
+  }
+});
+
+router.delete('/:id',
+                  validatorHandler(updateVentaSchema,'params'),
+                  async (req,res, next)=>{
+  try{
+    const {id} = req.params;
+    const rta = await service.delete(id);
+    res.json({
+      message: 'eliminado',
+      rta
+    });
+  }catch(error){
+    next(error);
+  }
+});
 
 module.exports = router;

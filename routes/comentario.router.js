@@ -2,51 +2,51 @@ const express = require ('express');
 const router = express.Router();
 
 const validatorHandler = require('../middlewares/validator.handler');
-const { getPagoSchema, createPagoSchema, updatePagoSchema } = require('../schemas/pago.schema');
+const { getcomentarioSchema, createcomentarioSchema, updatecomentarioSchema } = require('../schemas/comentarios.schema');
 
-const PagoService = require('../services/pago.service')
+const PagoService = require('../services/comentarios.service')
 const service = new PagoService();
 
 router.get('/', async (req, res) => {
-  const pagos = await service.find();
-    res.status(200).json(pagos);
+  const comentarios = await service.find();
+    res.status(200).json(comentarios);
   });
 
 
   router.get('/:id',
-              validatorHandler(getPagoSchema, 'params'),
+              validatorHandler(getcomentarioSchema, 'params'),
               async (req, res, next) => {
     try{
     const { id } = req.params;
-    const pago = await service.findOne(id);
-    res.status(200).json(pago);
+    const comentario = await service.findOne(id);
+    res.status(200).json(comentario);
     } catch(error){
       next(error);
     }
   });
 
 router.post('/',
-            validatorHandler(createPagoSchema, 'body'),
+            validatorHandler(createcomentarioSchema, 'body'),
             async (req, res)=> {
   const body = req.body;
-  const nuevoPago = await service.create(body);
+  const nuevocomentario = await service.create(body);
   res.status(201).json({
     message: 'creado',
-    nuevoPago
+    nuevocomentario
   });
 });
 
 router.patch('/:id',
-              validatorHandler(getPagoSchema, 'params'),
-              validatorHandler(updatePagoSchema, 'body'),
+              validatorHandler(getcomentarioSchema, 'params'),
+              validatorHandler(updatecomentarioSchema, 'body'),
               async (req, res, next)=> {
   try {
     const { id } = req.params;
     const body = req.body;
-    const pago = await service.update(id, body);
+    const comentario = await service.update(id, body);
     res.status(200).json({
       message: 'actualizado',
-      pago
+      comentario
     });
 
   } catch(error) {
@@ -55,7 +55,7 @@ router.patch('/:id',
 });
 
 router.delete('/:id',
-              validatorHandler(getPagoSchema, 'params'),
+              validatorHandler(getcomentarioSchema, 'params'),
               async (req, res, next)=> {
   try {
   const { id }= req.params;
@@ -69,3 +69,5 @@ router.delete('/:id',
   }
 })
   module.exports= router;
+
+
