@@ -1,16 +1,20 @@
 const {Model, DataTypes, Sequelize} = require('sequelize');
 
-const PRODUCT_TABLE = 'products';
-const ProductSchema = {
+const PAGO_TABLE = 'pagos';
+const PagoSchema = {
   id:{
     primaryKey: true,
     type: DataTypes.UUID
   },
-  nombre:{
+  tipoPago:{
     allowNull: false,
     type: DataTypes.STRING
   },
-  precio:{
+  fechaPago:{
+    allowNull: false,
+    type: DataTypes.DATE
+  },
+  montoPago:{
     allowNull: false,
     type: DataTypes.INTEGER
   },
@@ -22,17 +26,17 @@ const ProductSchema = {
   }
 };
 
-class Product extends Model{
+class Pago extends Model{
   static associate() {
   }
   static config(sequelize){
     return{
       sequelize,
-      tableName: PRODUCT_TABLE,
-      modelName: 'Product',
+      tableName: PAGO_TABLE,
+      modelName: 'Pago',
       timestamps: false
     }
   }
 }
 
-module.exports = {PRODUCT_TABLE, ProductSchema, Product};
+module.exports = {PAGO_TABLE, PagoSchema, Pago};

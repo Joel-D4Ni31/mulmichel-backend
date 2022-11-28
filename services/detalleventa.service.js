@@ -11,15 +11,15 @@ class DetalleventaService{
       id: crypto.randomUUID(),
       ...data
     };
-    const salida = await models.Detalleventa.create(nuevoDetalleventa);
+    const salida = await models.DetalleVenta.create(nuevoDetalleventa);
     return salida;
   }
   async find(){
-    const salida = await models.Detalleventa.findAll();
+    const salida = await models.DetalleVenta.findAll();
     return salida;
   }
   async findOne(id){
-    const detalleventa = await models.Detalleventa.findByPk(id);
+    const detalleventa = await models.DetalleVenta.findByPk(id);
     if (!detalleventa){
         throw boom.notFound('DetalleVenta not found');
       }

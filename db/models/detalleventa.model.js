@@ -6,13 +6,25 @@ const DetalleventaSchema = {
     primaryKey: true,
     type: DataTypes.UUID
   },
-  nombre:{
+  cantidad:{
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.INTEGER
   },
   precio:{
     allowNull: false,
     type: DataTypes.INTEGER
+  },
+  subtotal:{
+    allowNull: false,
+    type: DataTypes.INTEGER
+  },
+  idVenta:{
+    allowNull: false,
+    type: DataTypes.UUID
+  },
+  idProduct:{
+    allowNull: false,
+    type: DataTypes.UUID
   },
   createdAt:{
     allowNull: false,
