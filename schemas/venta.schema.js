@@ -10,24 +10,17 @@ const costoTotal = Joi.number()
 const delivery = Joi.string()
                   .min(3)
                   .max(30);
-const idCliente = Joi.string();
- const idPago = Joi.string();
-
 const createVentaSchema = Joi.object({
   fechaVenta : fechaVenta.required(),
   fechaEntrega: fechaEntrega.required(),
   costoTotal: costoTotal.required(),
-  delivery: delivery.required(),
-  idCliente: idCliente.required(),
-  idPago: idPago.required(),
+  delivery: delivery.required()
 });
 const updateVentatSchema = Joi.object({
   fechaVenta : fechaVenta,
   fechaEntrega: fechaEntrega,
   costoTotal: costoTotal,
-  delivery: delivery,
-  idCliente: idCliente,
-  idPago: idPago
+  delivery: delivery
 });
 const getVentaSchema = Joi.object({
   id : id.required()

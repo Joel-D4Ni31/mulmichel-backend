@@ -16,7 +16,7 @@ function routerApi(app){
   routerV1.use('/clientes',clientesRouter);
   routerV1.use('/pagos',pagosRouter);
   routerV1.use('/comentarios',comentariosRouter);
-  //routerV1.use('/categorias',categoriasRouter);
+ //routerV1.use('/categorias',categoriasRouter);
   routerV1.use('/detalles',detalleVentasRouter);
 }
 

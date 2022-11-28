@@ -52,7 +52,7 @@ router.patch('/:id',
 });
 
 router.delete('/:id',
-                  validatorHandler(updateCategoriaSchema,'params'),
+                  validatorHandler(getCategoriaSchema,'params'),
                   async (req,res, next)=>{
   try{
     const {id} = req.params;

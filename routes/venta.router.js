@@ -52,7 +52,7 @@ router.patch('/:id',
 });
 
 router.delete('/:id',
-                  validatorHandler(updateVentaSchema,'params'),
+                  validatorHandler(getVentaSchema,'params'),
                   async (req,res, next)=>{
   try{
     const {id} = req.params;

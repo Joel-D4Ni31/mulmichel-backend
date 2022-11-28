@@ -1,66 +1,39 @@
 const crypto = require('crypto');
 const boom = require('@hapi/boom')
+const {models} =  require('./../libs/sequelize');
 
 class ProductService{
 
   constructor(){
-    this.products = [];
-    this.generate(10);
-
-  }
-  async generate(limit){
-    for (let index = 0; index < limit; index++){
-      this.products.push({
-        id: crypto.randomUUID(),
-        nombre: 'product' + index,
-        precio: 10 + Math.floor(Math.random()*190),
-        estaBloqueado: Math.random()<0.25
-      });
-    }
   }
   async create(data){
     const nuevoProducto = {
       id: crypto.randomUUID(),
       ...data
     };
-    this.products.push(nuevoProducto);
-    return nuevoProducto;
+    const salida = await models.Product.create(nuevoProducto);
+    return salida;
   }
   async find(){
-    return this.products;
+    const salida = await models.Product.findAll();
+    return salida;
   }
   async findOne(id){
-    const producto = this.products.find((product) => {
-      return product.id === id;
-    });
-    if (!producto){//!product
-      throw boom.notFound('product not found');
-    }
+    const producto = await models.Product.findByPk(id);
+    if (!producto){
+        throw boom.notFound('Product not found');
+      }
     return producto;
   }
   async update(id, changes){
-    const index = this.products.findIndex(product =>{
-      return product.id === id;
-    });
-    if (index === -1){
-      throw boom.notFound('product not found');
-    }
-    const product = this.products[index];
-    this.products[index] = {
-      ...product,
-      ...changes
-    };
-    return this.products[index];
+    const producto = await this.findOne(id);
+    const salida = await producto.update(changes);
+    return salida;
   }
   async delete(id){
-    const index = this.products.findIndex(product =>{
-      return product.id === id;
-    });
-    if (index === -1){
-      throw boom.notFound('product not found');
-    }
-    this.products.splice(index,1);
-    return { id };
+    const producto = await this.findOne(id);
+    await producto.destroy();
+    return {id};
   }
 }
 module.exports = ProductService;
