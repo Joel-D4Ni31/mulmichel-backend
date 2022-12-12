@@ -8,24 +8,24 @@ const nombre = Joi.string()//.alphanum()
 const apellido = Joi.string()//.alphanum()
                   .min(3)
                   .max(30);
-const telefono = Joi.number()
-                  .integer()
-                  .min(10);
-const sueldo = Joi.number()
-                  .integer()
-                  .min(10);
+const telefono = Joi.string()//.alphanum()
+                    .min(3)
+                    .max(30);
+const correo = Joi.string()//.alphanum()
+                  .min(3)
+                  .max(30);
 
 const createEmpleadoSchema = Joi.object({
   nombre : nombre.required(),
   apellido : apellido.required(),
   telefono: telefono.required(),
-  sueldo: sueldo.required()
+  sueldo: correo.required()
 });
 const updatempleadoSchema = Joi.object({
   nombre : nombre,
   apellido: apellido,
   telefono: telefono,
-  sueldo: sueldo
+  sueldo: correo
 });
 const getEmpleadoSchema = Joi.object({
   id : id.required()

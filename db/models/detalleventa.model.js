@@ -18,14 +18,6 @@ const DetalleventaSchema = {
     allowNull: false,
     type: DataTypes.INTEGER
   },
-  idVenta:{
-    allowNull: false,
-    type: DataTypes.UUID
-  },
-  idProduct:{
-    allowNull: false,
-    type: DataTypes.UUID
-  },
   createdAt:{
     allowNull: false,
     type: DataTypes.DATE,

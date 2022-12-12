@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const boom = require('@hapi/boom')
 const {models} =  require('./../libs/sequelize');
+const { TipoProduct } = require('../db/models/tipoproduct.model');
 
 class ProductService{
 
@@ -15,7 +16,7 @@ class ProductService{
     return salida;
   }
   async find(){
-    const salida = await models.Product.findAll();
+    const salida = await models.Product.findAll({include: TipoProduct});
     return salida;
   }
   async findOne(id){

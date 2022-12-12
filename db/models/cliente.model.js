@@ -1,22 +1,30 @@
 const {Model, DataTypes, Sequelize} = require('sequelize');
 
-const PAGO_TABLE = 'pagos';
-const PagoSchema = {
+const CLIENTE_TABLE = 'clientes';
+const ClienteSchema = {
   id:{
     primaryKey: true,
     type: DataTypes.UUID
   },
-  tipoPago:{
+  razonSocial:{
     allowNull: false,
     type: DataTypes.STRING
   },
-  fechaPago:{
+  nombre:{
     allowNull: false,
-    type: DataTypes.DATE
+    type: DataTypes.STRING
   },
-  montoPago:{
+  apellido:{
     allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.STRING
+  },
+  telefono:{
+    allowNull: false,
+    type: DataTypes.STRING
+  },
+  dni:{
+    allowNull: false,
+    type: DataTypes.STRING
   },
   createdAt:{
     allowNull: false,
@@ -26,22 +34,23 @@ const PagoSchema = {
   }
 };
 
-class Pago extends Model{
+class Cliente extends Model{
   static associate(models) {
     this.hasMany(models.Venta,{
       foreignKey: {
-        name: 'pertenecepago'
+        name: 'pertenececliente'
       }
     });
+
   }
   static config(sequelize){
     return{
       sequelize,
-      tableName: PAGO_TABLE,
-      modelName: 'Pago',
+      tableName: CLIENTE_TABLE,
+      modelName: 'Cliente',
       timestamps: false
     }
   }
 }
 
-module.exports = {PAGO_TABLE, PagoSchema, Pago};
+module.exports = {CLIENTE_TABLE, ClienteSchema, Cliente};
