@@ -19,13 +19,13 @@ const createEmpleadoSchema = Joi.object({
   nombre : nombre.required(),
   apellido : apellido.required(),
   telefono: telefono.required(),
-  sueldo: correo.required()
+  correo: correo.required()
 });
 const updatempleadoSchema = Joi.object({
   nombre : nombre,
   apellido: apellido,
   telefono: telefono,
-  sueldo: correo
+  correo: correo
 });
 const getEmpleadoSchema = Joi.object({
   id : id.required()

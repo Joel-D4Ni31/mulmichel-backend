@@ -10,14 +10,6 @@ const DetalleventaSchema = {
     allowNull: false,
     type: DataTypes.INTEGER
   },
-  precio:{
-    allowNull: false,
-    type: DataTypes.INTEGER
-  },
-  subtotal:{
-    allowNull: false,
-    type: DataTypes.INTEGER
-  },
   createdAt:{
     allowNull: false,
     type: DataTypes.DATE,
@@ -27,13 +19,23 @@ const DetalleventaSchema = {
 };
 
 class DetalleVenta extends Model{
-  static associate() {
+  static associate(models) {
+    this.belongsTo(models.Product, {
+      foreignKey: {
+        name: 'perteneceproduct'
+      }
+    });
+    this.belongsTo(models.Venta,{
+      foreignKey:{
+        name: 'perteneceventa'
+      }
+    });
   }
   static config(sequelize){
     return{
       sequelize,
       tableName: DETALLEVENTA_TABLE,
-      modelName: 'detalleventa',
+      modelName: 'DetalleVenta',
       timestamps: false
     }
   }

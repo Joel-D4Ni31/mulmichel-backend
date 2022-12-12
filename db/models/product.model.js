@@ -1,5 +1,5 @@
 const {Model, DataTypes, Sequelize} = require('sequelize');
-const { DetalleVenta } = require('./detalleventa.model');
+
 
 const PRODUCT_TABLE = 'products';
 const ProductSchema = {
@@ -25,8 +25,10 @@ const ProductSchema = {
 
 class Product extends Model{
   static associate(models) {
-    this.belongsToMany(models.Venta,{
-      through: DetalleVenta
+    this.hasMany(models.DetalleVenta,{
+      foreignKey:{
+        name: 'perteneceproduct'
+      }
     });
     this.belongsTo(models.TipoProduct, {
       foreignKey: {

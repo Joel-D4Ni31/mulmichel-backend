@@ -1,5 +1,4 @@
 const {Model, DataTypes, Sequelize} = require('sequelize');
-const { DetalleVenta } = require('./detalleventa.model');
 
 const VENTA_TABLE = 'ventas';
 const VentaSchema = {
@@ -23,6 +22,18 @@ const VentaSchema = {
     allowNull: false,
     type: DataTypes.STRING
   },
+  estadoPago:{
+    allowNull: false,
+    type: DataTypes.BOOLEAN
+  },
+  fechaPago:{
+    allowNull: false,
+    type: DataTypes.DATE
+  },
+  montoPago:{
+    allowNull: false,
+    type: DataTypes.INTEGER
+  },
   createdAt:{
     allowNull: false,
     type: DataTypes.DATE,
@@ -34,6 +45,11 @@ const VentaSchema = {
 class Venta extends Model{
 
   static associate(models) {
+    this.hasMany(models.DetalleVenta,{
+      foreignKey:{
+        name: 'perteneceventa'
+      }
+    });
     this.belongsTo(models.Cliente, {
       foreignKey: {
         name: 'pertenececliente'
@@ -44,9 +60,7 @@ class Venta extends Model{
         name: 'pertenecepago'
       }
     });
-    this.belongsToMany(models.Product,{
-      through: DetalleVenta
-    });
+
   }
   static config(sequelize){
     return{

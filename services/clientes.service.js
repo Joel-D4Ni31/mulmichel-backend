@@ -1,24 +1,10 @@
 const crypto = require('crypto');
 const boom = require('@hapi/boom')
+const {models} =  require('./../libs/sequelize');
+
 
 class clientesService{
     constructor(){
-        this.clientes=[];
-        this.generate(10);
-
-    }
-
-    async generate(limite){
-        for (let index = 0; index < limite ; index ++)
-        this.clientes.push({
-                id: crypto.randomUUID(),
-                razonSocial: 'clientes' + index,
-                nombre: 'clientes' + index,
-                apellido: 'clientes' + index,
-                telefono: 10 + Math.floor(Math.random()*190),
-                DNI: 10 + Math.floor(Math.random()*190)
-
-        })
     }
 
     async create(data){
@@ -26,49 +12,35 @@ class clientesService{
             id: crypto.randomUUID(),
             ...data
           };
-          this.clientes.push(nuevocliente);
-          return nuevocliente;
+          const salida = await models.Cliente.create(nuevocliente);
+          return salida;
+
 
         }
 
     async find(){
-        return this.clientes;
+      const salida = await models.Cliente.findAll();
+      return salida;
        }
 
     async findOne(id){
-        const cliente = this.clientes.find((cliente) => {
-          return cliente.id === id;
-        });
-        if (!cliente){//!product
+      const cliente = await models.Cliente.findByPk(id);
+      if (!cliente){
           throw boom.notFound('cliente not found');
         }
-        return cliente;
+      return cliente;
       }
 
 
     async update(id, changes){
-    const index = this.clientes.findIndex(cliente =>{
-        return cliente.id === id;
-      });
-      if (index === -1){
-        throw boom.notFound('cliente not found');
-      }
-      const cliente = this.clientes[index];
-      this.clientes[index] = {
-        ...cliente,
-        ...changes
-      };
-      return this.clientes[index];
+      const cliente = await this.findOne(id);
+      const salida = await cliente.update(changes);
+      return salida;
    }
    async delete(id){
-    const index = this.clientes.findIndex(cliente =>{
-        return cliente.id === id;
-      });
-      if (index === -1){
-        throw boom.notFound('cliente not found');
-      }
-      this.clientes.splice(index,1);
-      return { id };
-   }
+    const cliente = await this.findOne(id);
+    await cliente.destroy();
+    return {id};
+}
 }
 module.exports=clientesService;

@@ -4,12 +4,12 @@ const router = express.Router();
 const  validatorHandler =  require('../middlewares/validator.handler');
 const {createDetalleSchema,updateDetalleSchema,getDetalleSchema} = require('../schemas/detalleventa.schema');
 
-const DetalleventaService = require('../services/detalleventa.service')
-const service = new DetalleventaService();
+const DetalleVentaService = require('../services/detalleventa.service')
+const service = new DetalleVentaService();
 
 router.get('/', async (req,res)=>{
-  const detalleventas = await service.find();
-  res.status(200).json(detalleventas);
+  const detalles = await service.find();
+  res.status(200).json(detalles);
 });
 
 router.get('/:id',
@@ -28,10 +28,10 @@ router.post('/',
              validatorHandler(createDetalleSchema,'body'),
               async (req,res)=>{
   const body = req.body;
-  const nuevodetalleventa = await service.create(body);
+  const nuevoDetalle = await service.create(body);
   res.status(201).json({
     message: 'creado',
-    nuevodetalleventa
+    nuevoDetalle
   });
 })
 router.patch('/:id',

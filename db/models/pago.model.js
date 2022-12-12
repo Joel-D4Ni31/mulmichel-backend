@@ -10,14 +10,6 @@ const PagoSchema = {
     allowNull: false,
     type: DataTypes.STRING
   },
-  fechaPago:{
-    allowNull: false,
-    type: DataTypes.DATE
-  },
-  montoPago:{
-    allowNull: false,
-    type: DataTypes.INTEGER
-  },
   createdAt:{
     allowNull: false,
     type: DataTypes.DATE,
@@ -28,7 +20,7 @@ const PagoSchema = {
 
 class Pago extends Model{
   static associate(models) {
-    this.hasMany(models.Venta,{
+    this.hasOne(models.Venta,{
       foreignKey: {
         name: 'pertenecepago'
       }

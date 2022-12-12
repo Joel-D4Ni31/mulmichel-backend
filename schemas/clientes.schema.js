@@ -13,12 +13,14 @@ const nombre = Joi.string()
 const apellido = Joi.string()
                    .min(3)
                    .max(15);
-const telefono = Joi.number()
-                   .integer()
-                   .min(10);
-const DNI = Joi.number()
-                   .integer()
-                   .min(10);
+const telefono = Joi.string()
+                    //.alphanum()
+                    .min(3)
+                    .max(15);
+const dni = Joi.string()
+                //.alphanum()
+                .min(3)
+                .max(15);
 
 
 const createclienteSchema = Joi.object({
@@ -26,7 +28,7 @@ const createclienteSchema = Joi.object({
   nombre: nombre.required(),
   apellido: apellido.required(),
   telefono: telefono.required(),
-  DNI: DNI.required()
+  dni: dni.required()
 });
 
 const updateclienteSchema = Joi.object({
@@ -34,7 +36,7 @@ const updateclienteSchema = Joi.object({
   nombre: nombre,
   apellido: apellido,
   telefono: telefono,
-  DNI: DNI
+  dni: dni
 });
 
 const getclienteSchema = Joi.object({
